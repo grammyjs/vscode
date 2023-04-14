@@ -1,0 +1,47 @@
+{
+  "Hello world bot": {
+    "prefix": "gy",
+    "body": [
+      "const { Bot } = require(\"grammy\");",
+      "",
+      "// Create an instance of the `Bot` class and pass your bot token to it.",
+      "const bot = new Bot('$token'); // <-- put your bot token between the \"\"",
+      "",
+      "// You can now register listeners on your bot object `bot`.",
+      "// grammY will call the listeners when users send messages to your bot.",
+      "",
+      "// Handle the /start command.",
+      "bot.command(\"start\", (ctx) => ctx.reply(\"Welcome! Up and running.\"));",
+      "// Handle other messages.",
+      "bot.on(\"message\", (ctx) => ctx.reply(\"Got another message!\"));",
+      "",
+      "// Now that you specified how to handle messages, you can start your bot.",
+      "// This will connect to the Telegram servers and wait for messages.",
+      "",
+      "// Start the bot.",
+      "bot.start();"
+    ],
+    "description": "Basic bot that replies with Hello world on `/start`"
+  },
+  "Command handler": {
+    "prefix": "cmd",
+    "body": [
+      "bot.command('$start', (ctx) => {",
+      "",
+      "  ctx.reply('Hello, world!');",
+      "});",
+      ""
+    ],
+    "description": "Handler function for bot commands"
+  },
+  "Filter query handler ": {
+    "prefix": "on",
+    "body": [
+      "bot.on('$filterQuery', (ctx) => {",
+      "  // do something here",
+      "",
+      "});"
+    ],
+    "description": "Handler function for bot commands"
+  }
+}
