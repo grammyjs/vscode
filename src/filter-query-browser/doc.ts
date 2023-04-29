@@ -16,7 +16,7 @@ const CONTEXT_SHORTCUTS: Record<string, string> = UPDATE_KEYS.reduce(
   (prev, current) => {
     return { ...prev, [current]: camelCase(current, "_") };
   },
-  {},
+  {}
 );
 
 function buildName(element: string[]) {
@@ -24,6 +24,7 @@ function buildName(element: string[]) {
 }
 
 const PREFIX_DOCS = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   chat_member:
     "You need to specify this update in allowed_updates to receive them.",
 };
@@ -66,10 +67,10 @@ export function generate() {
       const accessInfo = L2.join().includes("entities")
         ? `ctx.entities("${L3}");`
         : L1.map((k1) =>
-          L2.map((k2) => {
-            return `ctx.${CONTEXT_SHORTCUTS[k1]}.${k2}.${L3};`;
-          }).join("\n\n")
-        ).join("\n\n");
+            L2.map((k2) => {
+              return `ctx.${CONTEXT_SHORTCUTS[k1]}.${k2}.${L3};`;
+            }).join("\n\n")
+          ).join("\n\n");
 
       description = [
         `Query for filtering "${L1T}" update with the field "${L2T}" ${info0}.`,
