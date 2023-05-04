@@ -1,4 +1,4 @@
-> 🚧 Work in progress
+VS code extension for grammyjs > 🚧 Work in progress
 
 # VS code for grammy
 
@@ -20,6 +20,8 @@ The extension features `a real-time` updates explorer in the sidebar and it will
 
 
 ### Filter Query Explorer
+
+> coming soon
 
 One of the many cool features of `grammy` is it's [Filter Queries](https://grammy.dev/guide/filter-queries.html) and there are lots of them (like 800+ of em) and you may want to know a bit more about what exactly do they filter and how to access them.
 
