@@ -1,5 +1,5 @@
-import FILTER_QUERIES from "./filter_queries";
-import { L1_SHORTCUTS, L2_SHORTCUTS, UPDATE_KEYS } from "./metadata";
+import FILTER_QUERIES from "./generated/filter_queries";
+import { L1_SHORTCUTS, L2_SHORTCUTS, UPDATE_KEYS } from "./generated/metadata";
 
 function camelCase(str: string, separator: string) {
   return (

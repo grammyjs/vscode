@@ -1,6 +1,6 @@
 {
-  "name": "grammyjs",
-  "displayName": "Grammyjs",
+  "name": "vscode",
+  "displayName": "grammyjs",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -16,12 +16,61 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "grammyjs-tools",
+          "title": "grammy",
+          "icon": "assets/Y-fit.png"
+        }
+      ]
+    },
+    "views": {
+      "grammyjs-tools": [
+        {
+          "type": "tree",
+          "id": "updates-explorer",
+          "name": "Updates Explorer",
+          "contextualTitle": "Bot Updates Explorer"
+        },
+        {
+          "type": "tree",
+          "id": "filter-query-browser",
+          "name": "Filter Query Browser",
+          "contextualTitle": "Filter Query Browser"
+        }
+      ]
+    },
+    "viewsWelcome": [
       {
-        "command": "grammyjs.helloWorld",
-        "title": "Hello World"
+        "view": "updates-explorer",
+        "contents": "Visualize Telegram Updates as they happen.\n[Start](command:updates-explorer.start)"
+      },
+      {
+        "view": "filter-query-browser",
+        "contents": "Filter queries Documentation"
       }
     ],
+    "commands": [
+      {
+        "command": "updates-explorer.start",
+        "title": "Start"
+      },
+      {
+        "command": "updates-explorer.stop",
+        "title": "Stop",
+        "icon": "assets/stop.svg"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "updates-explorer.stop",
+          "when": "view == updates-explorer",
+          "group": "navigation"
+        }
+      ]
+    },
     "snippets": [
       {
         "language": "javascript",
@@ -35,7 +84,7 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run esbuild-base --minify",
-    "esbuild-base": "ts-node ./src/filter-query-browser/prepare.ts && esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "yarn run esbuild-base --sourcemap",
     "esbuild-watch": "yarn run esbuild-base --sourcemap --watch",
     "test-compile": "tsc -p ./"
@@ -44,6 +93,7 @@
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
+    "@types/temp": "^0.9.1",
     "@types/vscode": "^1.77.0",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
@@ -52,10 +102,12 @@
     "eslint": "^8.18.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
+    "ts-morph": "^18.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
     "axios": "^1.4.0",
-    "ts-morph": "^18.0.0"
+    "grammy": "^1.16.0",
+    "temp": "^0.9.4"
   }
 }
