@@ -86,11 +86,11 @@ async function generateTypeFilesFromRemoteSource() {
   export const L2_SHORTCUTS = ${JSON.stringify(L2_SHORTCUTS)};\n`;
 
       await writeFile(
-        "./src/filter-query-browser/generated/filter_queries.ts",
+        "./src/filter_explorer/generated/filter_queries.ts",
         modFile
       );
       await writeFile(
-        "./src/filter-query-browser/generated/metadata.ts",
+        "./src/filter_explorer/generated/metadata.ts",
         filterFile
       );
     } catch (error) {

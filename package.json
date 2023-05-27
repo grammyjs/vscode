@@ -43,24 +43,24 @@
           "type": "tree",
           "id": "updates-explorer",
           "name": "Updates Explorer",
-          "contextualTitle": "Bot Updates Explorer"
+          "contextualTitle": "Updates Explorer"
         },
         {
           "type": "webview",
           "id": "filter-query",
-          "name": "Filter Query Browser",
-          "contextualTitle": "Filter Query Browser"
+          "name": "Filter Explorer",
+          "contextualTitle": "Filter Explorer"
         }
       ]
     },
     "viewsWelcome": [
       {
         "view": "updates-explorer",
-        "contents": "Visualize Telegram Updates as they happen.\n[Start](command:updates-explorer.start)"
+        "contents": "Visualize Telegram updates as they happen.\n[Start](command:updates-explorer.start)"
       },
       {
-        "view": "filter-query",
-        "contents": "Filter queries Documentation"
+        "view": "filter-explorer",
+        "contents": "Filter queries documentation"
       }
     ],
     "commands": [
@@ -99,8 +99,8 @@
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "yarn run esbuild-base --sourcemap",
     "esbuild-watch": "yarn run esbuild-base --sourcemap --watch",
-    "compile-web": "node src/scripts/compileSvelte.mjs",
-    "generate-filter-queries": "ts-node src/filter-query-browser/prepare.ts"
+    "compile-web": "node src/scripts/compile_svelte.mjs",
+    "generate-filter-queries": "ts-node src/filter_explorer/prepare.ts"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { BotListener } from "./botListener";
+import { BotListener } from "./bot_listener";
 import { UpdatesExplorerTreeDataProvider } from "./provider";
 import type { Message, Update } from "grammy/types";
 import { botStoppedEvent, treeLabelSelectionEvent } from "./events";
