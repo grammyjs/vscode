@@ -1,7 +1,8 @@
 {
   "name": "grammyjs",
-  "displayName": "grammyjs",
-  "description": "Vscode extension for grammyjs the telegram bot development library",
+  "displayName": "grammY",
+  "publisher": "grammyjs",
+  "description": "Tooling for grammY bot development",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.77.0"
