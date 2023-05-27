@@ -3,13 +3,24 @@
   "displayName": "grammY",
   "publisher": "grammyjs",
   "description": "Tooling for grammY bot development",
-  "version": "0.0.1",
+  "preview": true,
+  "icon": "assets/Y-fit.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grammyjs/vscode"
+  },
+  "version": "1.0.0-alpha",
   "engines": {
     "vscode": "^1.77.0"
   },
   "categories": [
     "Snippets",
     "Other"
+  ],
+  "keywords": [
+    "telegram",
+    "bot",
+    "grammy"
   ],
   "activationEvents": [
     "onLanguage:javascript",
