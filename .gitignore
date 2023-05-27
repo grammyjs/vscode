@@ -1,6 +1,9 @@
-out
-dist
-node_modules
-.vscode-test/
+/out/
+/dist/
+
+/node_modules/
+/.yarn/
+/.vscode-test/
+
 *.vsix
 data.json
