@@ -4,14 +4,31 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Generate Filter Queries",
+      "type": "npm",
+      "script": "generate-filter-queries",
+      "isBackground": false,
+      "presentation": {
+        "reveal": "always",
+        "group": "watchers"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Start the extension",
       "type": "npm",
       "script": "esbuild-watch",
       "isBackground": true,
       "problemMatcher": "$esbuild-watch",
       "presentation": {
-        "reveal": "never",
+        "reveal": "always",
         "group": "watchers"
       },
+      "dependsOn": "Generate Filter Queries",
+      "dependsOrder": "sequence",
       "group": {
         "kind": "build",
         "isDefault": true

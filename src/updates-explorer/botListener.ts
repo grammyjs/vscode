@@ -1,15 +1,16 @@
 import { Bot } from "grammy";
 import type { Message, Update } from "grammy/types";
 
+type BotState = "listening" | "intializing" | "stopping" | "error" | "idle";
+
 export class BotListener {
   public token: string;
 
-  public state: "listening" | "intializing" | "stopping" | "error" | "idle" =
-    "idle";
-
   public error: Error | undefined;
 
-  public jsonData: (Message & Update.NonChannel) | undefined;
+  private jsonData: (Message & Update.NonChannel) | undefined;
+
+  private state: BotState = "idle";
 
   constructor(botToken: string) {
     this.token = botToken;
@@ -65,7 +66,7 @@ export class BotListener {
           "chat_member",
           "chat_join_request",
         ],
-        onStart: () => {
+        onStart: async () => {
           this.state = "listening";
         },
       });

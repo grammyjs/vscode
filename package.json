@@ -1,7 +1,7 @@
 {
-  "name": "vscode",
+  "name": "grammyjs",
   "displayName": "grammyjs",
-  "description": "",
+  "description": "Vscode extension for grammyjs the telegram bot development library",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.77.0"
@@ -34,8 +34,8 @@
           "contextualTitle": "Bot Updates Explorer"
         },
         {
-          "type": "tree",
-          "id": "filter-query-browser",
+          "type": "webview",
+          "id": "filter-query",
           "name": "Filter Query Browser",
           "contextualTitle": "Filter Query Browser"
         }
@@ -47,7 +47,7 @@
         "contents": "Visualize Telegram Updates as they happen.\n[Start](command:updates-explorer.start)"
       },
       {
-        "view": "filter-query-browser",
+        "view": "filter-query",
         "contents": "Filter queries Documentation"
       }
     ],
@@ -87,7 +87,8 @@
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "yarn run esbuild-base --sourcemap",
     "esbuild-watch": "yarn run esbuild-base --sourcemap --watch",
-    "test-compile": "tsc -p ./"
+    "compile-web": "node src/scripts/compileSvelte.mjs",
+    "generate-filter-queries": "ts-node src/filter-query-browser/prepare.ts"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -98,16 +99,20 @@
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
     "@vscode/test-electron": "^2.1.5",
+    "axios": "^1.4.0",
+    "chokidar": "^3.5.3",
     "esbuild": "^0.17.16",
+    "esbuild-svelte": "^0.7.3",
     "eslint": "^8.18.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
+    "svelte": "^3.58.0",
     "ts-morph": "^18.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "axios": "^1.4.0",
-    "grammy": "^1.16.0",
-    "temp": "^0.9.4"
+    "fuse.js": "^6.6.2",
+    "grammy": "^1.16.0"
   }
 }

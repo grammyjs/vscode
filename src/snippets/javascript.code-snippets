@@ -23,25 +23,22 @@
     ],
     "description": "Basic bot that replies with Hello world on `/start`"
   },
-  "Command handler": {
+  "Command handler function": {
     "prefix": "cmd",
     "body": [
-      "bot.command('$start', (ctx) => {",
-      "",
+      "bot.command('${1:command}', (ctx) => {",
       "  ctx.reply('Hello, world!');",
-      "});",
-      ""
-    ],
-    "description": "Handler function for bot commands"
-  },
-  "Filter query handler ": {
-    "prefix": "on",
-    "body": [
-      "bot.on('$filterQuery', (ctx) => {",
-      "  // do something here",
-      "",
       "});"
     ],
     "description": "Handler function for bot commands"
+  },
+  "Filter query handler": {
+    "prefix": "on",
+    "body": [
+      "bot.on('${1:filterQuery}', (ctx) => {",
+      "  // do something here",
+      "});"
+    ],
+    "description": "Handler function for filter queries"
   }
 }
