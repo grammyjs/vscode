@@ -2,13 +2,12 @@
 
 Enhance your experience when developing with grammY.
 
-- [grammY VS Code](#grammy-vs-code)
-  - [Features](#features)
-    - [Snippets](#snippets)
-    - [Updates Explorer](#updates-explorer)
-    - [Filter Explorer](#filter-explorer)
-  - [Contributing](#contributing)
-  - [Development](#development)
+- [Features](#features)
+  - [Snippets](#snippets)
+  - [Updates Explorer](#updates-explorer)
+  - [Filter Explorer](#filter-explorer)
+- [Contributing](#contributing)
+- [Development](#development)
 
 ## Features
 
