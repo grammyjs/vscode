@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { initUpdatesExplorer } from "./updates-explorer/mod";
-import { initFilterQueryBrowser } from "./filter-query-browser/mod";
-import { botStoppedEvent } from "./updates-explorer/events";
+import { initUpdatesExplorer } from "./updates_explorer/mod";
+import { initFilterQueryBrowser } from "./filter_explorer/mod";
+import { botStoppedEvent } from "./updates_explorer/events";
 
 export async function activate(context: vscode.ExtensionContext) {
   const startCommand = vscode.commands.registerCommand(

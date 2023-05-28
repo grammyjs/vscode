@@ -1,5 +1,5 @@
 <script>
-  import { generate } from "../filter-query-browser/doc";
+  import { generate } from "../filter_explorer/doc";
   import Fuse from "fuse.js";
 
   let query = "";
