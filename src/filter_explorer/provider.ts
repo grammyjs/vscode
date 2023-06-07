@@ -1,4 +1,5 @@
 import * as path from "path";
+
 import * as vscode from "vscode";
 
 export class FilterQueryWebviewProvider implements vscode.WebviewViewProvider {

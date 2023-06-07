@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
-import { initUpdatesExplorer } from "./updates_explorer/mod";
+
+import { generate } from "./filter_explorer/doc";
 import { initFilterQueryBrowser } from "./filter_explorer/mod";
 import { botStoppedEvent } from "./updates_explorer/events";
+import { initUpdatesExplorer } from "./updates_explorer/mod";
 
 export async function activate(context: vscode.ExtensionContext) {
   const startCommand = vscode.commands.registerCommand(
@@ -24,7 +26,34 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   );
   await initFilterQueryBrowser(context);
-  context.subscriptions.push(startCommand, stopCommand);
+
+  const filterQueryArray = generate();
+
+  const filterQueryHoverProvider = vscode.languages.registerHoverProvider(
+    "typescript",
+    {
+      provideHover(document, position, token) {
+        const wordRange = document.getWordRangeAtPosition(position);
+        const word = document.getText(wordRange);
+        const foundFilterQueryIndex = filterQueryArray.findIndex(
+          ({ query }) => word === query
+        );
+        if (foundFilterQueryIndex !== -1) {
+          return {
+            contents: [filterQueryArray[foundFilterQueryIndex].description],
+          };
+        } else {
+          return null;
+        }
+      },
+    }
+  );
+
+  context.subscriptions.push(
+    startCommand,
+    stopCommand,
+    filterQueryHoverProvider
+  );
 }
 
 // this method is called when your extension is deactivated

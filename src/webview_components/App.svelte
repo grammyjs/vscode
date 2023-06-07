@@ -1,6 +1,6 @@
 <script>
-  import { generate } from "../filter_explorer/doc";
   import Fuse from "fuse.js";
+  import { generate } from "../filter_explorer/doc";
 
   let query = "";
   let results = [];
@@ -37,12 +37,16 @@
 </main>
 
 <style>
+  main {
+    margin-top: 6px;
+  }
   input {
+    padding: 3px 5px;
+    margin: 3px;
     font-size: 13px;
-    line-height: 24px;
-    margin: 5px;
+    line-height: 20px;
+    border-radius: 2px;
     border: none;
-    border-radius: 3px;
     background-color: var(--vscode-input-background);
     color: var(--vscode-input-foreground);
     outline: none;
