@@ -30,9 +30,9 @@ export async function activate(context: vscode.ExtensionContext) {
   const filterQueryArray = generate();
 
   const filterQueryHoverProvider = vscode.languages.registerHoverProvider(
-    "typescript",
+    ["typescript", "javascript"],
     {
-      provideHover(document, position, token) {
+      provideHover(document, position) {
         const wordRange = document.getWordRangeAtPosition(position);
         const word = document.getText(wordRange);
         const foundFilterQueryIndex = filterQueryArray.findIndex(

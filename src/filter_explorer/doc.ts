@@ -48,14 +48,16 @@ export function generate() {
       description = [
         `Query for filtering "${L1T}" update.`,
         `Here's how you can access the information about the update:`,
-        L1.map((k1) => `ctx.${CONTEXT_SHORTCUTS[k1]};`).join("\n\n"),
+        L1.map((k1) => `\`\`\`ctx.${CONTEXT_SHORTCUTS[k1]}\`\`\``).join("\n\n"),
       ].join("\n\n");
     } else if (L1[0] && L2[0] && !L3) {
       description = [
         `Query for filtering "${L1T}" update with the field "${L2T}".`,
         "Here is how you can access the properties of the field:",
         L1.map((k1) =>
-          L2.map((k2) => `ctx.${CONTEXT_SHORTCUTS[k1]}.${k2};`).join("\n\n")
+          L2.map(
+            (k2) => `\`\`\`ctx.${CONTEXT_SHORTCUTS[k1]}.${k2};\`\`\``
+          ).join("\n\n")
         ).join("\n\n"),
       ].join("\n\n");
     } else if (L1[0] && L2[0] && L3) {
@@ -68,7 +70,7 @@ export function generate() {
         ? `ctx.entities("${L3}");`
         : L1.map((k1) =>
             L2.map((k2) => {
-              return `ctx.${CONTEXT_SHORTCUTS[k1]}.${k2}.${L3};`;
+              return `\`\`\`ctx.${CONTEXT_SHORTCUTS[k1]}.${k2}.${L3}\`\`\``;
             }).join("\n\n")
           ).join("\n\n");
 
