@@ -35,8 +35,14 @@ export async function activate(context: vscode.ExtensionContext) {
       provideHover(document, position) {
         const wordRange = document.getWordRangeAtPosition(position);
         const word = document.getText(wordRange);
-        const foundFilterQuery = filterQueryArray.find(({ query }) => word === query);
-        return foundFilterQuery ? foundFilterQuery.description : null
+        const foundFilterQuery = filterQueryArray.find(
+          ({ query }) => word === query
+        );
+        const hoverResult = foundFilterQuery
+          ? { contents: [foundFilterQuery.description] }
+          : null;
+
+        return hoverResult;
       },
     }
   );
