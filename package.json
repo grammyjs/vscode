@@ -116,6 +116,7 @@
     "esbuild": "^0.17.16",
     "esbuild-svelte": "^0.7.3",
     "eslint": "^8.18.0",
+    "eslint-plugin-import": "^2.27.5",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
     "svelte": "^3.58.0",

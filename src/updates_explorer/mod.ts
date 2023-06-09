@@ -1,10 +1,12 @@
-import * as vscode from "vscode";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { BotListener } from "./bot_listener";
-import { UpdatesExplorerTreeDataProvider } from "./provider";
+
 import type { Message, Update } from "grammy/types";
+import * as vscode from "vscode";
+
+import { BotListener } from "./bot_listener";
 import { botStoppedEvent, treeLabelSelectionEvent } from "./events";
+import { UpdatesExplorerTreeDataProvider } from "./provider";
 
 export async function initUpdatesExplorer(
   token: string,
