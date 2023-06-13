@@ -1,16 +1,14 @@
-import { Bot } from "grammy";
+import { Bot, BotConfig, Context } from "grammy";
 import type { Message, Update } from "grammy/types";
 
-type BotState = "listening" | "intializing" | "stopping" | "error" | "idle";
-
 export class BotListener {
-  public token: string;
+  private token: string;
 
-  public error: Error | undefined;
+  private error: Error | undefined;
+
+  private customApiServerURL?: string;
 
   private jsonData: (Message & Update.NonChannel) | undefined;
-
-  private state: BotState = "idle";
 
   constructor(botToken: string) {
     this.token = botToken;
@@ -45,7 +43,6 @@ export class BotListener {
         }
       });
 
-      this.state = "intializing";
       await bot.api.getMe();
       await bot.init();
       await bot.start({
@@ -66,23 +63,30 @@ export class BotListener {
           "chat_member",
           "chat_join_request",
         ],
-        onStart: async () => {
-          this.state = "listening";
-        },
+        onStart: async () => {},
       });
     } catch (err) {
-      this.state = "error";
       this.error = err as Error;
     }
   }
 
   public async stopListeningToUpdates() {
-    this.state = "stopping";
     await this.getBotInstance().stop();
-    this.state = "idle";
+  }
+
+  public get botError() {
+    return this.error;
+  }
+
+  public set customApiServer(url: string) {
+    this.customApiServerURL = url;
   }
 
   private getBotInstance() {
-    return new Bot(this.token);
+    let config: BotConfig<Context> = {};
+    if (this.customApiServerURL) {
+      config = { client: { apiRoot: this.customApiServerURL } };
+    }
+    return new Bot(this.token, config);
   }
 }
