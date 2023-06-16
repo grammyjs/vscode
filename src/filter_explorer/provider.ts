@@ -3,10 +3,10 @@ import * as path from "path";
 import * as vscode from "vscode";
 
 export class FilterQueryWebviewProvider implements vscode.WebviewViewProvider {
-  private extensionContext: vscode.ExtensionContext;
+  private extensionPath: string;
 
-  constructor(context: vscode.ExtensionContext) {
-    this.extensionContext = context;
+  constructor(extensionPath: string) {
+    this.extensionPath = extensionPath;
   }
   resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -15,9 +15,7 @@ export class FilterQueryWebviewProvider implements vscode.WebviewViewProvider {
   ): void | Thenable<void> {
     const getPathToFile = (fileName: string) => {
       return webviewView.webview.asWebviewUri(
-        vscode.Uri.file(
-          path.resolve(this.extensionContext.extensionPath, "assets", fileName)
-        )
+        vscode.Uri.file(path.resolve(this.extensionPath, "assets", fileName))
       );
     };
 

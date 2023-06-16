@@ -79,7 +79,7 @@ export function generate() {
         `Here is how you can access the ${
           isEntity ? `entities of "${L3}" type` : `"${L3}" property`
         }:`,
-        accessInfo,
+        `\`\`\`${accessInfo}\`\`\``,
       ].join("\n\n");
     } else {
       throw new Error(`There is some issue with the "${query}" filter query.`);
