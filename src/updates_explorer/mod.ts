@@ -5,7 +5,11 @@ import type { Message, Update } from "grammy/types";
 import * as vscode from "vscode";
 
 import { BotListener } from "./bot_listener";
-import { botStoppedEvent, treeLabelSelectionEvent } from "./events";
+import {
+  botListenerUpdateDataEvent,
+  botStoppedEvent,
+  treeLabelSelectionEvent,
+} from "./events";
 import { UpdatesExplorerTreeDataProvider } from "./provider";
 
 export async function initUpdatesExplorer(
@@ -31,28 +35,30 @@ export async function initUpdatesExplorer(
 
   const listener = new BotListener(token);
 
-  listener.startListeningToUpdates((data) => {
-    const now = new Date().toLocaleString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: false,
-    });
+  botListenerUpdateDataEvent.event((data) => {
+    if (!(data instanceof Error)) {
+      const now = new Date().toLocaleString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+      });
 
-    jsonData[now] = data;
-    treeDataProvider.addNewEntry(now);
+      jsonData[now] = data;
+      treeDataProvider.addNewEntry(now);
 
-    shownDocument.edit(async (editBuilder) => {
-      const document = shownDocument.document;
-      await editAndWriteUpdatedJsonDataInFile(
-        document,
-        editBuilder,
-        JSON.stringify(jsonData[now], null, 2)
-      );
-    });
+      shownDocument.edit(async (editBuilder) => {
+        const document = shownDocument.document;
+        await editAndWriteUpdatedJsonDataInFile(
+          document,
+          editBuilder,
+          JSON.stringify(jsonData[now], null, 2)
+        );
+      });
+    }
   });
 
   const changeEventListener = treeView.onDidChangeSelection((e) => {

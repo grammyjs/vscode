@@ -1,6 +1,8 @@
 import { Bot, BotConfig, Context } from "grammy";
 import type { Message, Update } from "grammy/types";
 
+import { botListenerUpdateDataEvent } from "./events";
+
 export class BotListener {
   private token: string;
 
@@ -14,9 +16,7 @@ export class BotListener {
     this.token = botToken;
   }
 
-  public async startListeningToUpdates(
-    onDataReceived: (data: Message & Update.NonChannel) => void
-  ) {
+  public async startListeningToUpdates() {
     try {
       const bot = this.getBotInstance();
 
@@ -39,7 +39,7 @@ export class BotListener {
         // console.log(decoratedUpdate.message);
         this.jsonData = decoratedUpdate.message;
         if (this.jsonData !== undefined) {
-          onDataReceived(this.jsonData);
+          botListenerUpdateDataEvent.fire(this.jsonData);
         }
       });
 
@@ -66,7 +66,7 @@ export class BotListener {
         onStart: async () => {},
       });
     } catch (err) {
-      this.error = err as Error;
+      botListenerUpdateDataEvent.fire(err as Error);
     }
   }
 
