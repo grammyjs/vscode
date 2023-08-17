@@ -1,10 +1,12 @@
 import * as vscode from "vscode";
 
 import { botStoppedEvent } from "../updates_explorer/events";
-import { initUpdatesExplorer } from "../updates_explorer/mod";
+import { initUpdatesExplorer } from "../updates_explorer/virtual";
 
 enum Commands {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Start = "updates-explorer.start",
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Stop = "updates-explorer.stop",
 }
 
@@ -18,7 +20,7 @@ export default function registerUpdatesExplorerCommands(
         title: "Enter your Bot token",
       });
       if (token) {
-        await initUpdatesExplorer(token, context);
+        await initUpdatesExplorer(token);
       } else {
         vscode.window.showErrorMessage("Token was not provided");
       }

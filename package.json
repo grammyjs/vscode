@@ -72,13 +72,17 @@
         "command": "updates-explorer.stop",
         "title": "Stop",
         "icon": "assets/stop.svg"
+      },
+      {
+        "command": "helloworld",
+        "title": "virtual"
       }
     ],
     "menus": {
       "view/title": [
         {
           "command": "updates-explorer.stop",
-          "when": "view == updates-explorer",
+          "when": "view === updates-explorer",
           "group": "navigation"
         }
       ]

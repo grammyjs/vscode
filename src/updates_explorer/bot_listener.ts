@@ -1,14 +1,10 @@
-import { Bot, BotConfig, Context } from "grammy";
+import { Bot } from "grammy";
 import type { Message, Update } from "grammy/types";
-
-import { botListenerUpdateDataEvent } from "./events";
 
 export class BotListener {
   private token: string;
 
   private error: Error | undefined;
-
-  private customApiServerURL?: string;
 
   private jsonData: (Message & Update.NonChannel) | undefined;
 
@@ -16,7 +12,9 @@ export class BotListener {
     this.token = botToken;
   }
 
-  public async startListeningToUpdates() {
+  public async startListeningToUpdates(
+    onDataReceived: (data: Message & Update.NonChannel) => void
+  ) {
     try {
       const bot = this.getBotInstance();
 
@@ -39,7 +37,7 @@ export class BotListener {
         // console.log(decoratedUpdate.message);
         this.jsonData = decoratedUpdate.message;
         if (this.jsonData !== undefined) {
-          botListenerUpdateDataEvent.fire(this.jsonData);
+          onDataReceived(this.jsonData);
         }
       });
 
@@ -65,9 +63,7 @@ export class BotListener {
         ],
         onStart: async () => {},
       });
-    } catch (err) {
-      botListenerUpdateDataEvent.fire(err as Error);
-    }
+    } catch (err) {}
   }
 
   public async stopListeningToUpdates() {
@@ -78,15 +74,7 @@ export class BotListener {
     return this.error;
   }
 
-  public set customApiServer(url: string) {
-    this.customApiServerURL = url;
-  }
-
   private getBotInstance() {
-    let config: BotConfig<Context> = {};
-    if (this.customApiServerURL) {
-      config = { client: { apiRoot: this.customApiServerURL } };
-    }
-    return new Bot(this.token, config);
+    return new Bot(this.token);
   }
 }
