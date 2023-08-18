@@ -5,16 +5,14 @@ import { initUpdatesExplorer } from "../updates_explorer/virtual";
 
 enum Commands {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  Start = "updates-explorer.start",
+  StartExplorer = "updates-explorer.start",
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  Stop = "updates-explorer.stop",
+  StopExplorer = "updates-explorer.stop",
 }
 
-export default function registerUpdatesExplorerCommands(
-  context: vscode.ExtensionContext
-) {
+export default function registerCommands(context: vscode.ExtensionContext) {
   const startCommand = vscode.commands.registerCommand(
-    Commands.Start,
+    Commands.StartExplorer,
     async () => {
       const token = await vscode.window.showInputBox({
         title: "Enter your Bot token",
@@ -28,7 +26,7 @@ export default function registerUpdatesExplorerCommands(
   );
 
   const stopCommand = vscode.commands.registerCommand(
-    Commands.Stop,
+    Commands.StopExplorer,
     async () => {
       botStoppedEvent.fire(true);
     }

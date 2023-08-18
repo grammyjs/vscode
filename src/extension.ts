@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 
-import registerUpdatesExplorerCommands from "./commands/updates_explorer_commands";
+import registerCommands from "./commands/commands";
 import initFilterQueryHoverProvider from "./filter_explorer/hover_provider";
 import { initFilterQueryBrowser } from "./filter_explorer/mod";
 
 export async function activate(context: vscode.ExtensionContext) {
   initFilterQueryHoverProvider(context);
-  registerUpdatesExplorerCommands(context);
+  registerCommands(context);
   initFilterQueryBrowser(context);
 }
 

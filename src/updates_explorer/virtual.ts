@@ -2,6 +2,7 @@ import { Message, Update } from "grammy/types";
 import * as vscode from "vscode";
 
 import { BotListener } from "./bot_listener";
+import { BotStopCodeLensProvider } from "./code_lens";
 import { botStoppedEvent } from "./events";
 import { UpdatesExplorerTreeDataProvider } from "./provider";
 
@@ -9,6 +10,11 @@ export async function initUpdatesExplorer(token: string) {
   const scheme = "botUpdate";
   let updateData: Record<string, Message & Update.NonChannel> = {};
   let now: string = "latest";
+
+  vscode.languages.registerCodeLensProvider(
+    { scheme, language: "json" },
+    new BotStopCodeLensProvider()
+  );
 
   const virtualDocumentContentProvider = new (class
     implements vscode.TextDocumentContentProvider
@@ -95,22 +101,30 @@ export async function initUpdatesExplorer(token: string) {
     if (event) {
       await listener.stopListeningToUpdates();
       treeView.dispose();
-      await closeFileIfOpen(uri);
+      await closeVirtualDocument(doc);
       vscode.window.showErrorMessage("Bot stopped");
     }
   });
 }
 
-const closeFileIfOpen = async (file: vscode.Uri) => {
-  const tabs = vscode.window.tabGroups.all.map((tg) => tg.tabs).flat();
-  console.log(tabs);
+async function closeVirtualDocument(doc: vscode.TextDocument) {
+  //make the doc active editor
+  await vscode.window.showTextDocument(doc);
+  //close active editor
+  await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+}
 
-  const index = tabs.findIndex(
-    (tab) => tab.input instanceof vscode.TabInputText && tab.input.uri === file
-  );
-  console.log(index);
-
-  if (index !== -1) {
-    await vscode.window.tabGroups.close(tabs[index]);
+//handle Graceful Close Of Virtual Document
+vscode.workspace.onDidCloseTextDocument(async (doc) => {
+  if (doc.uri.scheme === "botUpdate") {
+    await vscode.commands.executeCommand("updates-explorer.stop");
   }
-};
+});
+
+vscode.window.onDidChangeVisibleTextEditors(async (editors) => {
+  editors.forEach(async (editor) => {
+    if (editor.document.uri.scheme === "botUpdate") {
+      await vscode.commands.executeCommand("updates-explorer.stop");
+    }
+  });
+});

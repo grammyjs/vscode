@@ -1,5 +1,5 @@
 {
-  "name": "grammyjs",
+  "name": "vscode-grammy",
   "displayName": "grammY",
   "publisher": "grammyjs",
   "description": "Tooling for grammY bot development",

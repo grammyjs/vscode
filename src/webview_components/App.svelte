@@ -9,7 +9,7 @@
 
   const fuse = new Fuse(data, {
     keys: ["query"],
-    threshold: 0.8,
+    threshold: 0.4,
   });
 
   function updateResults() {
