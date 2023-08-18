@@ -20,7 +20,7 @@ export default function registerCommands(context: vscode.ExtensionContext) {
       if (token) {
         await initUpdatesExplorer(token);
       } else {
-        vscode.window.showErrorMessage("Token was not provided");
+        vscode.window.showErrorMessage("No bot token was specified.");
       }
     }
   );
