@@ -43,7 +43,6 @@ async function buildWeb() {
     outfile: "assets/webview.js",
     plugins: [sveltePlugin()],
     minify: true,
-    format: "esm",
     logLevel: "info",
   };
 
