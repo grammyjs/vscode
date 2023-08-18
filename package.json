@@ -3,13 +3,13 @@
   "displayName": "grammY",
   "publisher": "grammyjs",
   "description": "Tooling for grammY bot development",
-  "preview": true,
+  "preview": false,
   "icon": "assets/Y-fit.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/grammyjs/vscode"
   },
-  "version": "1.0.0",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.77.0"
   },
@@ -72,10 +72,6 @@
         "command": "updates-explorer.stop",
         "title": "Stop",
         "icon": "assets/stop.svg"
-      },
-      {
-        "command": "helloworld",
-        "title": "virtual"
       }
     ],
     "menus": {
