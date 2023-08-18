@@ -1163,13 +1163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-svelte@npm:^0.7.3":
-  version: 0.7.3
-  resolution: "esbuild-svelte@npm:0.7.3"
+"esbuild-svelte@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "esbuild-svelte@npm:0.7.4"
   peerDependencies:
     esbuild: ">=0.9.6"
-    svelte: ">=3.43.0"
-  checksum: f90e3484d9df026f141ceadb248276b5ea5703b2956f74963880ef6de7ea19a24ff0a53a13db337f8e097486e3d336b6a5313218a312dc7243dd1cf9f3050b47
+    svelte: ">=3.43.0 <5"
+  checksum: 2a43e3a2043a6d94ad8f1fff7fbce4c3d739a2c9d29b64f39c0a36c980c7fc8e9f0054dd47f721600b79d4eb5763bdb56fe3a84d8afba8140b6ac6f46bd4373d
   languageName: node
   linkType: hard
 
@@ -1779,12 +1779,13 @@ __metadata:
     axios: ^1.4.0
     chokidar: ^3.5.3
     esbuild: ^0.17.16
-    esbuild-svelte: ^0.7.3
+    esbuild-svelte: ^0.7.4
     eslint: ^8.18.0
     eslint-plugin-import: ^2.27.5
     fuse.js: ^6.6.2
     glob: ^8.0.3
     grammy: ^1.16.0
+    mri: ^1.2.0
     svelte: ^3.58.0
     ts-morph: ^18.0.0
     ts-node: ^10.9.1
@@ -2445,6 +2446,13 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 8a1d09ffac585e55f41c54f445051f5bc33a7de99b952bb04c576cafdf1a67bb4bae8cb93736f7da6838771fbf75bc630430a3a59e1252047d2278690bd150ee
+  languageName: node
+  linkType: hard
+
+"mri@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "mri@npm:1.2.0"
+  checksum: 83f515abbcff60150873e424894a2f65d68037e5a7fcde8a9e2b285ee9c13ac581b63cfc1e6826c4732de3aeb84902f7c1e16b7aff46cd3f897a0f757a894e85
   languageName: node
   linkType: hard
 

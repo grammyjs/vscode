@@ -7,3 +7,6 @@
 
 *.vsix
 data.json
+
+/assets/webview.js
+/assets/webview.css
