@@ -1,123 +1,130 @@
-import * as fs from "fs/promises";
-import * as path from "path";
-
-import type { Message, Update } from "grammy/types";
+import { Message, Update } from "grammy/types";
 import * as vscode from "vscode";
 
 import { BotListener } from "./bot_listener";
-import {
-  botListenerUpdateDataEvent,
-  botStoppedEvent,
-  treeLabelSelectionEvent,
-} from "./events";
+import { BotStopCodeLensProvider } from "./code_lens";
+import { botStoppedEvent } from "./events";
 import { UpdatesExplorerTreeDataProvider } from "./provider";
 
-export async function initUpdatesExplorer(
-  token: string,
-  context: vscode.ExtensionContext
-) {
-  const tempFilePath = path.join(context.extensionPath, "data.json");
-  await fs.writeFile(tempFilePath, "", { encoding: "utf-8" });
+export async function initUpdatesExplorer(token: string) {
+  const scheme = "botUpdate";
+  let updateData: Record<string, Message & Update.NonChannel> = {};
+  let now: string = "latest";
 
-  const tempDocument = await vscode.workspace.openTextDocument(
-    vscode.Uri.file(tempFilePath)
+  vscode.languages.registerCodeLensProvider(
+    { scheme, language: "json" },
+    new BotStopCodeLensProvider()
   );
-  const shownDocument = await vscode.window.showTextDocument(tempDocument, {
+
+  const virtualDocumentContentProvider = new (class
+    implements vscode.TextDocumentContentProvider
+  {
+    private updateDataLabel: string = now;
+
+    public set setLabel(label: string) {
+      this.updateDataLabel = label;
+    }
+
+    public get getLabel() {
+      return this.updateDataLabel;
+    }
+
+    onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
+    onDidChange = this.onDidChangeEmitter.event;
+
+    provideTextDocumentContent(
+      uri: vscode.Uri,
+      token: vscode.CancellationToken
+    ): vscode.ProviderResult<string> {
+      const updateDataKeysArray = Object.keys(updateData);
+
+      const indexToshow =
+        this.updateDataLabel === "latest"
+          ? updateDataKeysArray[updateDataKeysArray.length - 1]
+          : this.updateDataLabel;
+
+      return JSON.stringify(updateData[indexToshow] ?? {}, null, 2);
+    }
+  })();
+
+  vscode.workspace.registerTextDocumentContentProvider(
+    scheme,
+    virtualDocumentContentProvider
+  );
+
+  const uri = vscode.Uri.parse(scheme + ":" + "data.json");
+  const doc = await vscode.workspace.openTextDocument(uri);
+
+  await vscode.window.showTextDocument(doc, {
+    preview: false,
     viewColumn: vscode.ViewColumn.Beside,
   });
 
-  const treeDataProvider = new UpdatesExplorerTreeDataProvider([" "]);
+  const treeDataProvider = new UpdatesExplorerTreeDataProvider(["latest"]);
+
   const treeView = vscode.window.createTreeView("updates-explorer", {
     treeDataProvider,
   });
 
-  let jsonData: Record<string, Message & Update.NonChannel> = {};
-
   const listener = new BotListener(token);
 
-  botListenerUpdateDataEvent.event((data) => {
-    if (!(data instanceof Error)) {
-      const now = new Date().toLocaleString(undefined, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: false,
-      });
+  listener.startListeningToUpdates((data) => {
+    now = new Date().toLocaleString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+    });
 
-      jsonData[now] = data;
-      treeDataProvider.addNewEntry(now);
+    updateData[now] = data;
+    treeDataProvider.addNewEntry(now);
 
-      shownDocument.edit(async (editBuilder) => {
-        const document = shownDocument.document;
-        await editAndWriteUpdatedJsonDataInFile(
-          document,
-          editBuilder,
-          JSON.stringify(jsonData[now], null, 2)
-        );
-      });
+    const currentLabel = virtualDocumentContentProvider.getLabel;
+
+    if (currentLabel === now || currentLabel === "latest") {
+      virtualDocumentContentProvider.onDidChangeEmitter.fire(uri);
     }
   });
 
-  const changeEventListener = treeView.onDidChangeSelection((e) => {
+  treeView.onDidChangeSelection((e) => {
     const selectedElement = e.selection[0];
-    treeLabelSelectionEvent.fire(selectedElement);
+    virtualDocumentContentProvider.setLabel = selectedElement;
+    virtualDocumentContentProvider.onDidChangeEmitter.fire(uri);
   });
 
-  const labelChangeListener = treeLabelSelectionEvent.event((label) => {
-    shownDocument.edit(async (editBuilder) => {
-      await editAndWriteUpdatedJsonDataInFile(
-        shownDocument.document,
-        editBuilder,
-        JSON.stringify(jsonData[label], null, 2)
-      );
-    });
-  });
+  botStoppedEvent.event(async (event) => {
+    console.log("stop event");
 
-  const botStoppedListener = botStoppedEvent.event(async (event) => {
     if (event) {
       await listener.stopListeningToUpdates();
       treeView.dispose();
-      await closeFileIfOpen(vscode.Uri.file(tempFilePath));
+      await closeVirtualDocument(doc);
       vscode.window.showErrorMessage("Bot stopped");
     }
   });
-  context.subscriptions.push(
-    changeEventListener,
-    labelChangeListener,
-    botStoppedListener
-  );
 }
 
-const editAndWriteUpdatedJsonDataInFile = async (
-  document: vscode.TextDocument,
-  editBuilder: vscode.TextEditorEdit,
-  data: string
-) => {
-  const lastLine = document.lineAt(document.lineCount - 1);
+async function closeVirtualDocument(doc: vscode.TextDocument) {
+  //make the doc active editor
+  await vscode.window.showTextDocument(doc);
+  //close active editor
+  await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+}
 
-  const range = new vscode.Range(
-    0,
-    0,
-    lastLine.lineNumber,
-    lastLine.range.end.character
-  );
-  editBuilder.replace(range, data);
-  await document.save();
-};
-
-const closeFileIfOpen = async (file: vscode.Uri) => {
-  const tabs: vscode.Tab[] = vscode.window.tabGroups.all
-    .map((tg) => tg.tabs)
-    .flat();
-  const index = tabs.findIndex(
-    (tab) =>
-      tab.input instanceof vscode.TabInputText &&
-      tab.input.uri.path === file.path
-  );
-  if (index !== -1) {
-    await vscode.window.tabGroups.close(tabs[index]);
+//handle Graceful Close Of Virtual Document
+vscode.workspace.onDidCloseTextDocument(async (doc) => {
+  if (doc.uri.scheme === "botUpdate") {
+    await vscode.commands.executeCommand("updates-explorer.stop");
   }
-};
+});
+
+vscode.window.onDidChangeVisibleTextEditors(async (editors) => {
+  editors.forEach(async (editor) => {
+    if (editor.document.uri.scheme === "botUpdate") {
+      await vscode.commands.executeCommand("updates-explorer.stop");
+    }
+  });
+});

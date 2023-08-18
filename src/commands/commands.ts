@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import { botStoppedEvent } from "../updates_explorer/events";
-import { initUpdatesExplorer } from "../updates_explorer/virtual";
+import { initUpdatesExplorer } from "../updates_explorer/mod";
 
 enum Commands {
   // eslint-disable-next-line @typescript-eslint/naming-convention
