@@ -15,7 +15,7 @@ export default function registerCommands(context: vscode.ExtensionContext) {
     Commands.StartExplorer,
     async () => {
       const token = await vscode.window.showInputBox({
-        title: "Enter your Bot token",
+        title: "Enter your bot token",
       });
       if (token) {
         await initUpdatesExplorer(token);
